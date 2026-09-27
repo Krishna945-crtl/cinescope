@@ -64,21 +64,29 @@ function genreColor(item) {
   return g ? g.theme.accent : "#555";
 }
 
-const stars = (x) => (x.rating ? ` · ⭐ ${x.rating}` : x.imdb ? ` · ⭐ ${x.imdb}` : "");
+// emoji ni span lo pedtham - CSS hover lo matrame chupistundi 👀
+const ico = (e) => `<span class="ico">${e}</span>`;
+
+const stars = (x) => (x.rating ? ` · ★ ${x.rating}` : x.imdb ? ` · ★ ${x.imdb}` : "");
 
 function cardEl(item) {
   const el = document.createElement("div");
   el.className = "card" + (item.poster ? " has-poster" : "");
   el.tabIndex = 0;
   el.style.setProperty("--g", genreColor(item));
-  const tag = item.language && item.india ? `🇮🇳 ${esc(item.language)}` : item.india ? "🇮🇳 India" : "";
+  const tag = item.language && item.india ? esc(item.language) : item.india ? "India" : "";
   el.innerHTML = `
-    ${item.poster ? `<img class="poster" loading="lazy" alt="" src="${esc(item.poster)}">` : ""}
-    ${tag ? `<span class="tag">${tag}</span>` : ""}
-    <button class="add" data-add="${esc(item.id)}" aria-label="Add to watchlist"></button>
-    <div class="emoji">${item.emoji}</div>
-    <div class="title">${esc(item.title)}</div>
-    <div class="meta">${item.year}${stars(item)} · ${esc(item.genre_labels.slice(0, 2).join(", "))}</div>`;
+    <div class="art">
+      ${item.poster ? `<img class="poster" loading="lazy" alt="" src="${esc(item.poster)}">` : ""}
+      <span class="initial">${esc(item.title.trim()[0] || "")}</span>
+      <span class="emoji">${item.emoji}</span>
+      ${tag ? `<span class="tag">${tag}</span>` : ""}
+      <button class="add" data-add="${esc(item.id)}" aria-label="Add to watchlist"></button>
+    </div>
+    <div class="body">
+      <div class="title" title="${esc(item.title)}">${esc(item.title)}</div>
+      <div class="meta">${item.year}${stars(item)} · ${esc(item.genre_labels[0] || "")}</div>
+    </div>`;
   // Poster load avvakapothe emoji card ki fallback 🎭
   const img = $(".poster", el);
   if (img) img.onerror = () => { img.remove(); el.classList.remove("has-poster"); };
@@ -95,7 +103,7 @@ function rowEl(row) {
   sec.className = "row";
   sec.id = `row-${row.key}`;
   sec.innerHTML = `
-    <div class="row-head"><h2>${row.emoji} ${esc(row.title)}</h2>
+    <div class="row-head"><h2>${ico(row.emoji)}${esc(row.title)}</h2>
       ${row.count ? `<span class="count muted">${row.count} titles</span>` : ""}</div>
     <div class="row-wrap">
       <button class="arrow left" aria-label="Scroll left">‹</button>
@@ -115,13 +123,13 @@ function renderChips() {
   box.innerHTML = "";
   const all = document.createElement("button");
   all.className = "chip" + (state.genre ? "" : " active");
-  all.textContent = "✨ All";
+  all.innerHTML = `${ico("✨")}All`;
   all.onclick = () => { $("#search").value = ""; setGenre(null); };
   box.appendChild(all);
   Object.values(state.genres).forEach((g) => {
     const b = document.createElement("button");
     b.className = "chip" + (state.genre === g.key ? " active" : "");
-    b.textContent = `${g.emoji} ${g.label}`;
+    b.innerHTML = `${ico(g.emoji)}${esc(g.label)}`;
     b.onclick = () => { $("#search").value = ""; setGenre(g.key); };
     box.appendChild(b);
   });
@@ -145,14 +153,14 @@ async function loadBrowse() {
   const hero = $("#hero");
   if (data.genre) {
     hero.innerHTML = `
-      <h1><span class="big">${data.genre.emoji}</span>${esc(data.genre.label)} ${kindLabel}</h1>
+      <h1>${ico(data.genre.emoji)}${esc(data.genre.label)} ${kindLabel}</h1>
       <div class="muted">${data.total} titles · ${data.subgenres.length} sub-genres</div>
       <div class="subs">${data.subgenres.map((s) =>
-        `<button class="chip" data-jump="${esc(s.key)}">${s.emoji} ${esc(s.title)} <span class="muted">${s.count}</span></button>`).join("")}</div>`;
+        `<button class="chip" data-jump="${esc(s.key)}">${ico(s.emoji)}${esc(s.title)} <span class="n">${s.count}</span></button>`).join("")}</div>`;
     hero.querySelectorAll("[data-jump]").forEach((b) =>
       (b.onclick = () => document.getElementById(`row-${b.dataset.jump}`)?.scrollIntoView({ behavior: "smooth" })));
   } else {
-    hero.innerHTML = `<h1><span class="big">🍿</span>All ${kindLabel}</h1>
+    hero.innerHTML = `<h1>${ico("🍿")}All ${kindLabel}</h1>
       <div class="muted">${data.total} titles · pick a genre to change the whole vibe</div>`;
   }
   const rows = $("#rows");
@@ -160,8 +168,8 @@ async function loadBrowse() {
   data.rows.forEach((r) => rows.appendChild(rowEl(r)));
   if (data.subgenres.length) {
     const h = document.createElement("h2");
-    h.style.margin = "34px 0 0";
-    h.textContent = data.genre ? `${data.genre.emoji} Sub-genres` : "🎭 By genre";
+    h.className = "section-title";
+    h.innerHTML = data.genre ? `${ico(data.genre.emoji)}Sub-genres` : `${ico("🎭")}By genre`;
     rows.appendChild(h);
     data.subgenres.forEach((r) => rows.appendChild(rowEl(r)));
   }
@@ -218,7 +226,7 @@ async function openModal(id) {
                  : `<div class="m-emoji" style="background:linear-gradient(160deg, ${color}, #000)">${t.emoji}</div>`}
       <div>
         <h2 class="m-title" id="m-title">${esc(t.title)}</h2>
-        <div class="muted">${t.kind === "series" ? "📺 Web Series" : "🎬 Movie"} · ${t.year}${len ? " · " + len : ""}${t.age ? " · " + esc(t.age) : ""}${t.rating ? ` · ⭐ ${t.rating} ${esc(t.rating_src)}` : ""}${t.language ? " · 🗣️ " + esc(t.language) : ""}${t.india ? " · 🇮🇳 India" : ""}</div>
+        <div class="muted">${t.kind === "series" ? "Web Series" : "Movie"} · ${t.year}${len ? " · " + len : ""}${t.age ? " · " + esc(t.age) : ""}${t.rating ? ` · ★ ${t.rating} ${esc(t.rating_src)}` : ""}${t.language ? " · " + esc(t.language) : ""}${t.india && !t.language ? " · India" : ""}</div>
         <div style="margin:10px 0">${t.genre_labels.map((g) => `<span class="pill">${esc(g)}</span>`).join("")}</div>
         <p>${esc(t.description) || '<span class="muted">No description available.</span>'}</p>
         <button class="btn" id="m-add"></button>
@@ -259,9 +267,9 @@ function renderWatchlist() {
     const labels = x.genres.map((k) => state.genres[k]?.label || k).join(", ");
     li.innerHTML = `
       <input type="checkbox" ${x.watched ? "checked" : ""} aria-label="Mark ${esc(x.title)} as watched">
-      <span class="e">${x.emoji}</span>
+      <span class="e ico">${x.emoji}</span>
       <div class="info"><div class="t">${esc(x.title)}</div>
-        <div class="muted" style="font-size:13px">${x.kind === "series" ? "📺 Web Series" : "🎬 Movie"} · ${x.year} · ${esc(labels)}${stars(x)}</div></div>
+        <div class="muted" style="font-size:13px">${x.kind === "series" ? "Web Series" : "Movie"} · ${x.year} · ${esc(labels)}${stars(x)}</div></div>
       <button class="remove" aria-label="Remove">✕</button>`;
     $("input", li).onchange = (e) => {
       const l = loadWL();
