@@ -1,0 +1,73 @@
+{
+  "groups": 214,
+  "seeds": 515,
+  "hit_at_10_pct": {
+    "Random": 0.8,
+    "Popular in same genre": 1.7,
+    "Story words only": 72.6,
+    "Story + genre (genre weight 0.3)": 76.1,
+    "Story + genre (genre weight 0.6)": 54.0,
+    "Story + genre (genre weight 0.8)": 52.2
+  },
+  "example_groups": [
+    [
+      "Five Came Back",
+      "Five Came Back: The Reference Films"
+    ],
+    [
+      "Teenage Mutant Ninja Turtles",
+      "Teenage Mutant Ninja Turtles II: The Secret of the Ooze",
+      "Teenage Mutant Ninja Turtles III"
+    ],
+    [
+      "Thomas & Friends",
+      "Thomas & Friends: All Engines Go!"
+    ],
+    [
+      "Mobile Suit Gundam II: Soldiers of Sorrow",
+      "Mobile Suit Gundam III: Encounters in Space",
+      "Mobile Suit Gundam: Char's Counterattack"
+    ],
+    [
+      "Sam Kinison: Breaking the Rules",
+      "Sam Kinison: Family Entertainment Hour",
+      "Sam Kinison: Live in Vegas",
+      "Sam Kinison: The Scream Continues"
+    ],
+    [
+      "Tim Allen: Men Are Pigs",
+      "Tim Allen: Rewires America"
+    ],
+    [
+      "Bill Hicks: One Night Stand",
+      "Bill Hicks: Reflections",
+      "Bill Hicks: Relentless",
+      "Bill Hicks: Revelations",
+      "Bill Hicks: Sane Man"
+    ],
+    [
+      "Gilmore Girls",
+      "Gilmore Girls: A Year in the Life"
+    ],
+    [
+      "Blade",
+      "Blade II",
+      "Blade: Trinity"
+    ],
+    [
+      "Godzilla",
+      "Godzilla: City on the Edge of Battle",
+      "Godzilla: Planet of the Monsters",
+      "Godzilla: The Planet Eater"
+    ],
+    [
+      "Jerry Seinfeld: 23 Hours to Kill",
+      "Jerry Seinfeld: I'm Telling You for the Last Time"
+    ],
+    [
+      "Monty Python: Live (Mostly)",
+      "Monty Python: Live at Aspen",
+      "Monty Python: The Meaning of Live"
+    ]
+  ]
+}

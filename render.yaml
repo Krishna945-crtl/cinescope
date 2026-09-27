@@ -1,0 +1,12 @@
+# Render.com free web service - GitHub repo connect chesthe ee file chusi deploy chestundi
+services:
+  - type: web
+    name: cinescope
+    runtime: python
+    plan: free
+    # TMDB_API_KEY unte latest movies + posters download, lekapothe Netflix dataset
+    buildCommand: pip install -r requirements.txt && python scripts/fetch_tmdb.py
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: TMDB_API_KEY
+        sync: false        # Render dashboard lo nuvve paste chestav - GitHub lo undadu 🔒

@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.DS_Store
+
+# TMDB data build time lo download avutundi - repo lo pettam
+data/tmdb_catalog.csv
+.env

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CineScope · Movies & Web Series by Genre</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="#" data-home>🎬 <span>CineScope</span></a>
+    <div class="search">
+      <input id="search" type="search" autocomplete="off"
+             placeholder="Search a title, or a genre like action, romance, horror…" aria-label="Search">
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-view="browse">Browse</button>
+      <button class="nav-btn" data-view="watchlist">My Watchlist <span id="wl-count" class="badge">0</span></button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Browse view -->
+    <section id="view-browse">
+      <div class="kind-tabs" role="tablist">
+        <button class="kind active" data-kind="movie" role="tab">🎬 Movies</button>
+        <button class="kind" data-kind="series" role="tab">📺 Web Series</button>
+      </div>
+      <div id="genre-chips" class="chips" aria-label="Genres"></div>
+      <div id="lang-chips" class="chips langs" aria-label="Languages" hidden></div>
+      <div id="hero" class="hero"></div>
+      <div id="search-results"></div>
+      <div id="for-you"></div>
+      <div id="rows"></div>
+    </section>
+
+    <!-- Watchlist view -->
+    <section id="view-watchlist" hidden>
+      <div class="wl-head">
+        <h1>📝 My Watchlist</h1>
+        <p id="wl-progress" class="muted"></p>
+      </div>
+      <div class="wl-controls">
+        <div class="kind-tabs small">
+          <button class="wl-kind active" data-wlkind="all">All</button>
+          <button class="wl-kind" data-wlkind="movie">🎬 Movies</button>
+          <button class="wl-kind" data-wlkind="series">📺 Web Series</button>
+        </div>
+        <select id="wl-genre" aria-label="Filter by genre"><option value="">All genres</option></select>
+        <label class="toggle"><input type="checkbox" id="wl-hide-watched"> Hide watched</label>
+      </div>
+      <ul id="wl-list" class="wl-list"></ul>
+      <div id="wl-recs"></div>
+    </section>
+  </main>
+
+  <!-- Title details -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="m-title">
+      <button class="close" aria-label="Close">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <div id="attribution"></div>
+    <div>Genre browsing + TF-IDF recommendations · Student portfolio project</div>
+  </footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>
